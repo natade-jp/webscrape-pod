@@ -24,18 +24,21 @@ export default class WebscrapeAmedasu {
 
 	/**
 	 * アメダス情報を取得する
+	 * @param {number} amdno アメダスの番号
 	 * @returns {Promise<AmedasuRecord|null>}
 	 */
-	static async getAmedasu() {
+	static async getAmedasu(amdno) {
 		
 		/**
-		 * アメダスの番号
+		 * アメダスの番号（amdno=51106）が必要
 		 * https://www.jma.go.jp/bosai/amedas/#amdno=51106&area_type=offices&area_code=230000&format=table1h&elems=70c10
 		 */
-		const amdno = 51106;
 
-		// https://www.jma.go.jp/bosai/amedas/data/point/51106/20230206_03.json
+		// 以下のように取得も可能だが、3時間(00,03,06,09,...)ごとの情報しか取得できない。
+		// https://www.jma.go.jp/bosai/amedas/data/point/51106/20230716_03.json
 
+		// 取得しにくいので、最終更新日を用いて取得する
+		// 最終更新日を取得する
 		// https://www.jma.go.jp/bosai/amedas/data/latest_time.txt
 		const latest_time_url = "https://www.jma.go.jp/bosai/amedas/data/latest_time.txt";
 		const latest_time_response = await HTTP.wget(latest_time_url);
@@ -44,6 +47,7 @@ export default class WebscrapeAmedasu {
 		}
 		const latest_time = new Date(latest_time_response);
 
+		// 最終更新日の情報を取得して、特定の地域の情報を取得する
 		// https://www.jma.go.jp/bosai/amedas/data/map/20230207222000.json
 		const amedas_url = "https://www.jma.go.jp/bosai/amedas/data/map/" + Format.datef("YYYYMMDDhhmmss", latest_time) + ".json";
 		const amedas_response = await HTTP.wget(amedas_url);

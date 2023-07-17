@@ -72,11 +72,16 @@ export default class WebscrapeTenkiYoho {
 
 	/**
 	 * 天気予報情報を取得する
+	 * @param {number} code_url 天気予報の気象台番
+	 * @param {number} code_temps 気温の予報番号
+	 * @param {number} code_weathers 天気の予報番号 
 	 * @returns {Promise<SimpleTenkiYohoRecord|null>}
 	 */
-	static async getTenkiYoho() {
+	static async getTenkiYoho(code_url, code_temps, code_weathers) {
 
+		// 天気予報の番号は、以下の番号を指す
 		// 愛知県 230000
+		// https://www.jma.go.jp/bosai/forecast/#area_type=class20s&area_code=2310000
 		// https://www.jma.go.jp/bosai/forecast/data/overview_forecast/230000.json
 		// https://www.jma.go.jp/bosai/forecast/data/forecast/230000.json
 		// https://anko.education/apps/weather_api
@@ -96,11 +101,7 @@ export default class WebscrapeTenkiYoho {
 			tempsMin : ""
 		};
 
-		/**
-		 * 天気予報の番号
-		 * https://www.jma.go.jp/bosai/forecast/#area_type=class20s&area_code=2310000
-		 */
-		const code_url = 230000;
+		// 指定した箇所の気象台の情報を取得する
 		// https://www.jma.go.jp/bosai/forecast/data/forecast/230000.json
 		const forecast_url = "https://www.jma.go.jp/bosai/forecast/data/forecast/" + code_url + ".json";
 		const forecast_response = await HTTP.wget(forecast_url);
@@ -145,8 +146,6 @@ export default class WebscrapeTenkiYoho {
 
 		{
 			// 降水確率を調査
-			// 西部
-			const code_pops = 230010;
 			// console.log(forecast_json[0].timeSeries[1].timeDefines);
 			// console.log(forecast_json[0].timeSeries[1].areas);
 			const timeDefines = forecast_json[0].timeSeries[1].timeDefines;
@@ -155,7 +154,7 @@ export default class WebscrapeTenkiYoho {
 			let data = "";
 			for(let i = 0; i < areas.length; i++) {
 				const areas_record = areas[i];
-				if(parseInt( areas_record.area.code, 10) !== code_pops) {
+				if(parseInt( areas_record.area.code, 10) !== code_weathers) {
 					continue;
 				}
 				for(let j = 0; j < timeDefines.length; j++) {
@@ -177,8 +176,6 @@ export default class WebscrapeTenkiYoho {
 
 		{
 			// 天気を調査
-			// 西部
-			const code_weathers = 230010;
 			// console.log(forecast_json[0].timeSeries);
 			const timeDefines = forecast_json[0].timeSeries[0].timeDefines;
 			const areas = forecast_json[0].timeSeries[0].areas;

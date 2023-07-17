@@ -15,9 +15,9 @@ export default class Format {
 	 * `printf` に似た書式に合わせて文字列を組み立てる
 	 * - ロケール、日付時刻等はサポートしていません。
 	 * - 変換指定子の`p`と`n`はサポートしていません。
-	 * @param {String} text 
+	 * @param {string} text 
 	 * @param {...any} parm パラメータは可変引数
-	 * @returns {String}
+	 * @returns {string}
 	 */
 	static textf() {
 		let parm_number = 1;
@@ -379,10 +379,10 @@ export default class Format {
 	/**
 	 * 時刻用の書式に合わせて文字列を組み立てる
 	 * - `YYYY-MM-DD hh:mm:ss` のように指定できる。
-	 * @param {String} text 
+	 * @param {string} text 
 	 * @param {Date} date 時刻情報
 	 * @param {number} [delta_hour=9] 時間のずらし(デフォルトは日本時間を利用する)
-	 * @returns {String}
+	 * @returns {string}
 	 */
 	static datef(text, date, delta_hour) {
 		const target_delta_hour = delta_hour ? delta_hour : 9;
