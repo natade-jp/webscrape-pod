@@ -1,0 +1,21 @@
+{
+  "name": "main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+		"start": "node ./src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@types/jquery": "^3.3.31",
+    "konpeito": "^6.0.1",
+    "request": "^2.88.2"
+  }
+}
